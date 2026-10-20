@@ -54,9 +54,3 @@ La importación en una instalación limpia requiere esta revisión; no se presen
 En la revisión del 20 de octubre de 2026, Estudiantes y Gestión obtuvieron tres respuestas del servidor en IPv4 y en IPv6. La ACL rechazó los intentos de Estudiantes hacia Finanzas. Port-channel1 continuó operativo con un miembro apagado. HSRP recuperó el servicio mediante SWM2 y se restauró el principal al terminar. R1 mostró tres vecinos OSPF FULL y rutas entre áreas.
 
 Durante la convergencia hubo pérdida temporal. El ISP es simulado y no representa acceso a Internet real. La prueba de caída completa del switch y la transición independiente de OSPF de área única a multiárea no están documentadas como terminadas. Tampoco se realizaron pruebas de carga ni llamadas de voz. Los alcances y límites se explican en el informe.
-
-## Procedencia y uso académico
-
-La topología base utilizada durante la práctica se adaptó al direccionamiento y las políticas del Equipo 5. Referencia de origen: [PRODUCTO 1 EQUIPO 2](https://github.com/karl0-os/PRODUCTO-1--EQUIPO-2_CONMUTACION-Y-ENRUTAMIENTO-). Este repositorio documenta la adaptación y sus pruebas; no atribuye al equipo la autoría de la topología base.
-
-La entrega del aula se completa con un PDF que contiene este repositorio y el enlace real de la grabación de Teams, una vez realizada.
