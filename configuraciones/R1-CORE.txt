@@ -1,0 +1,168 @@
+
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1-CORE
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ description SWM1
+ ip address 172.24.11.89 255.255.255.252
+ ipv6 address 2001:25:24:B::1/64
+!
+interface Ethernet0/1
+ no shutdown
+ description SWM2
+ ip address 172.24.11.93 255.255.255.252
+ ip ospf cost 20
+ ipv6 address 2001:25:24:C::1/64
+!
+interface Ethernet0/2
+ no shutdown
+ description ISP-SIMULADO
+ ip address 192.0.2.2 255.255.255.252
+ ip access-group WAN-SOURCES out
+!
+interface Ethernet0/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Serial1/0
+ no shutdown
+ description R2-SUCURSAL
+ ip address 172.24.11.81 255.255.255.252
+ ipv6 address 2001:25:24:A::1/64
+ serial restart-delay 0
+ clock rate 64000
+!
+interface Serial1/1
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial1/2
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial1/3
+ no shutdown
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+router ospf 5
+ router-id 1.1.1.1
+ passive-interface default
+ no passive-interface Ethernet0/0
+ no passive-interface Ethernet0/1
+ no passive-interface Serial1/0
+ network 172.24.11.80 0.0.0.3 area 0
+ network 172.24.11.88 0.0.0.3 area 0
+ network 172.24.11.92 0.0.0.3 area 0
+ default-information originate
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 192.0.2.1
+!
+ip access-list standard WAN-SOURCES
+ permit 172.24.0.0 0.1.255.255
+ deny   any log
+!
+ipv6 route 2001:25:24:1::/64 2001:25:24:B::2
+ipv6 route 2001:25:24:1::/64 2001:25:24:C::2 10
+ipv6 route 2001:25:24:2::/64 2001:25:24:B::2
+ipv6 route 2001:25:24:2::/64 2001:25:24:C::2 10
+ipv6 route 2001:25:24:3::/64 2001:25:24:A::2
+ipv6 route 2001:25:24:4::/64 2001:25:24:A::2
+ipv6 route 2001:25:24:5::/64 2001:25:24:A::2
+ipv6 route 2001:25:24:6::/64 2001:25:24:B::2
+ipv6 route 2001:25:24:6::/64 2001:25:24:C::2 10
+ipv6 route 2001:25:24:7::/64 2001:25:24:B::2
+ipv6 route 2001:25:24:7::/64 2001:25:24:C::2 10
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end

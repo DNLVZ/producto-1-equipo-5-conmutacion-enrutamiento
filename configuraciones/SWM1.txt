@@ -1,0 +1,201 @@
+
+!
+! Last configuration change at 17:13:36 UTC Tue Oct 20 2026
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SWM1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+no ip cef
+ipv6 unicast-routing
+no ipv6 cef
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 10,20,30,40,50 priority 24576
+!
+vlan internal allocation policy ascending
+!
+track 1 interface Ethernet0/0 line-protocol
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ no shutdown
+ switchport trunk allowed vlan 10,20,30,40,50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 50
+ switchport mode trunk
+!
+interface Ethernet0/0
+ no shutdown
+ no switchport
+ ip address 172.24.11.90 255.255.255.252
+ duplex auto
+ ipv6 address 2001:25:24:B::2/64
+!
+interface Ethernet0/1
+ no shutdown
+ switchport trunk allowed vlan 10,20,30,40,50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 50
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface Ethernet0/2
+ no shutdown
+ switchport trunk allowed vlan 10,20,30,40,50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 50
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface Ethernet0/3
+ no shutdown
+ switchport trunk allowed vlan 10,20,30,40,50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 50
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface Ethernet1/0
+ no shutdown
+ switchport trunk allowed vlan 10,20,30,40,50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 50
+ switchport mode trunk
+!
+interface Ethernet1/1
+ no shutdown
+ switchport trunk allowed vlan 10,20,30,40,50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 50
+ switchport mode trunk
+!
+interface Ethernet1/2
+ no shutdown
+ switchport trunk allowed vlan 10,20,30,40,50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 50
+ switchport mode trunk
+!
+interface Ethernet1/3
+ no shutdown
+!
+interface Vlan10
+ no shutdown
+ ip address 172.24.0.2 255.255.248.0
+ ip access-group ESTUDIANTES-IN in
+ standby 10 ip 172.24.0.1
+ standby 10 priority 110
+ standby 10 preempt
+ standby 10 track 1 decrement 20
+ ipv6 address 2001:25:24:1::2/64
+ ipv6 traffic-filter ESTUDIANTES6-IN in
+!
+interface Vlan20
+ no shutdown
+ ip address 172.24.8.2 255.255.255.0
+ standby 20 ip 172.24.8.1
+ standby 20 priority 110
+ standby 20 preempt
+ standby 20 track 1 decrement 20
+ ipv6 address 2001:25:24:2::2/64
+!
+interface Vlan30
+ no shutdown
+ ip address 172.24.9.2 255.255.255.192
+ standby 30 ip 172.24.9.1
+ standby 30 priority 110
+ standby 30 preempt
+ standby 30 track 1 decrement 20
+ ipv6 address 2001:25:24:6::2/64
+!
+interface Vlan40
+ no shutdown
+ ip address 172.24.9.66 255.255.255.224
+ standby 40 ip 172.24.9.65
+ standby 40 priority 110
+ standby 40 preempt
+ standby 40 track 1 decrement 20
+ ipv6 address 2001:25:24:7::2/64
+!
+router ospf 5
+ router-id 5.5.5.5
+ passive-interface default
+ no passive-interface Ethernet0/0
+ network 172.24.0.0 0.0.7.255 area 10
+ network 172.24.8.0 0.0.0.255 area 10
+ network 172.24.9.0 0.0.0.63 area 10
+ network 172.24.9.64 0.0.0.31 area 10
+ network 172.24.11.88 0.0.0.3 area 0
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+ip access-list standard ADMIN-VTY
+ permit 172.24.9.0 0.0.0.63
+ deny   any log
+!
+ip access-list extended ESTUDIANTES-IN
+ deny   ip 172.24.0.0 0.0.7.255 172.24.10.128 0.0.0.127
+ deny   ip 172.24.0.0 0.0.7.255 172.24.9.0 0.0.0.63
+ permit ip any any
+!
+ipv6 route ::/0 2001:25:24:B::1
+!
+!
+!
+ipv6 access-list ESTUDIANTES6-IN
+ deny ipv6 2001:25:24:1::/64 2001:25:24:4::/64
+ deny ipv6 2001:25:24:1::/64 2001:25:24:6::/64
+ permit ipv6 any any
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ access-class ADMIN-VTY in
+ login
+!
+!
+end
