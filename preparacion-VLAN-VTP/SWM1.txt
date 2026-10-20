@@ -1,0 +1,18 @@
+enable
+configure terminal
+vtp domain EQUIPO5-HQ
+vtp version 2
+vtp mode server
+vlan 10
+name ESTUDIANTES
+vlan 20
+name DOCENTES
+vlan 30
+name GESTION
+vlan 40
+name VOZ
+vlan 50
+name BLACKHOLE
+exit
+end
+write memory

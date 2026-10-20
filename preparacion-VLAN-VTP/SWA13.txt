@@ -1,0 +1,14 @@
+enable
+configure terminal
+vtp domain EQUIPO5-SUC
+vtp version 2
+vtp mode server
+vlan 60
+name FINANZAS
+vlan 70
+name ACADEMICOS
+vlan 90
+name BLACKHOLE
+exit
+end
+write memory

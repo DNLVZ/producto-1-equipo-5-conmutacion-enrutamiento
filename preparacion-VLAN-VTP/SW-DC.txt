@@ -1,0 +1,10 @@
+enable
+configure terminal
+vtp domain EQUIPO5-DC
+vtp version 2
+vtp mode transparent
+vlan 80
+name DATACENTER
+exit
+end
+write memory

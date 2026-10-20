@@ -1,0 +1,7 @@
+enable
+configure terminal
+vtp domain EQUIPO5-HQ
+vtp version 2
+vtp mode client
+end
+write memory
